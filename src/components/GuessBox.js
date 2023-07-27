@@ -48,7 +48,13 @@ function GuessBox(props) {
 
   const suggestionItems = suggestions.map((suggestion) => {
     return (
-      <div key={suggestion} onClick={handleSuggestionClicked}>
+      <div
+        key={suggestion}
+        className={
+          props.guesses.includes(suggestion) ? "guessed_suggestion" : ""
+        }
+        onClick={handleSuggestionClicked}
+      >
         {suggestion}
       </div>
     );

@@ -42,13 +42,15 @@ function App() {
   }, [fetchCountriesHandler]);
 
   const addGuess = (guess) => {
-    setGuesses((guesses) => [...guesses, guess]);
+    setGuesses((guesses) =>
+      guesses.includes(guess) ? guesses : [...guesses, guess]
+    );
   };
 
   return (
     <div className="App">
       <Title />
-      <GuessBox countries={countries} addGuess={addGuess} />
+      <GuessBox countries={countries} guesses={guesses} addGuess={addGuess} />
       <GuessArea
         categories={categories}
         guesses={guesses}

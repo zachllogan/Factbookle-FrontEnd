@@ -13,7 +13,9 @@ function GuessArea(props) {
   const [expandedGuess, setExpandedGuess] = useState("");
 
   const addPin = (name) => {
-    setPinned((pinned) => [...pinned, name]);
+    setPinned((pinned) => {
+      return pinned.includes(name) ? pinned : [...pinned, name];
+    });
   };
 
   const removePin = (name) => {

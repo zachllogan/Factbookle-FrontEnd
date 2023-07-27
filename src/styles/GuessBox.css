@@ -33,3 +33,7 @@
 .suggestion_box div:hover {
   color: var(--highlight-color);
 }
+
+.guessed_suggestion {
+  text-decoration: line-through;
+}

@@ -1,0 +1,35 @@
+.guess_box {
+  background-color: var(--bg-color);
+  border-radius: 2em;
+  font-size: 2rem;
+  height: ex;
+  border: 2px solid var(--highlight-color);
+  color: var(--fg-color);
+  outline: none;
+  padding: 0.5ex 1.5ex;
+  margin: 2rem;
+  width: 25rem;
+}
+
+.suggestion_box {
+  border: 2px solid var(--highlight-color);
+  border-top: none;
+  font-size: 1.5rem;
+  width: 24rem;
+  margin: auto;
+  position: relative;
+  top: calc(2px - 2rem);
+  border-radius: 0 0 2rem 2rem;
+  padding: 5px;
+}
+
+.suggestion_box div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0.5ex 1.5ex;
+}
+
+.suggestion_box div:hover {
+  color: var(--highlight-color);
+}

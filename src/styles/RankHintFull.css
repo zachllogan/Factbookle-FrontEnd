@@ -1,0 +1,10 @@
+.rank_full {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+  /* justify-content: space-between; */
+}
+
+.rank_full .pinnable_stat {
+  margin-right: 2rem;
+}

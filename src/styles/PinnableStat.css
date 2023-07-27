@@ -1,0 +1,41 @@
+.pinnable_stat {
+  align-items: center;
+  display: flex;
+}
+
+.pin {
+  border: none;
+  background-color: transparent;
+  font-size: 2rem;
+  color: var(--fg-color);
+  transition: 500ms;
+  transform: rotate(20deg);
+}
+
+.pin:hover {
+  color: var(--highlight-color);
+  transform: rotate(-70deg);
+}
+
+.hint_header .pinnable_stat {
+  width: calc(20ch - 10px);
+  justify-content: center;
+  margin: 5px;
+}
+
+.hint_header .stat_name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.hint_header .pin {
+  color: var(--highlight-color);
+  transform: rotate(-70deg);
+}
+
+.hint_header .pin:hover {
+  color: var(--highlight-color);
+  color: var(--fg-color);
+  transform: rotate(20deg);
+}

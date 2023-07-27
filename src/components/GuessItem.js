@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../styles/GuessItem.css";
 import RankHintFull from "./RankHintFull";
 import RankHintSm from "./RankHintSm";
 
 function GuessItem(props) {
-  const [expanded, setExpanded] = useState(false);
   var content;
+  var nameRef = useRef();
 
-  if (!expanded) {
+  if (!props.expanded) {
     content = props.pinned.map((pin) => {
       const guessRank = props.guess?.stats.find((stat) => {
         return stat?.statType.name == pin;
@@ -60,13 +60,22 @@ function GuessItem(props) {
   }
 
   const handleNameClicked = () => {
-    setExpanded((expanded) => !expanded);
-    //props.unexpandOthers(props.guess?.country);
+    if (props.expanded) {
+      props.expandGuess("", null);
+    } else {
+      props.expandGuess(props.guess?.country);
+    }
   };
 
+  useEffect(() => {
+    if (props.expanded) {
+      nameRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [props.expanded]);
+
   return (
-    <div className={"guess_item" + (expanded ? " expanded" : "")}>
-      <div className="guess_name" onClick={handleNameClicked}>
+    <div className={"guess_item" + (props.expanded ? " expanded" : "")}>
+      <div className="guess_name" onClick={handleNameClicked} ref={nameRef}>
         {props.guess?.country}
       </div>
       <div className="guess_content">{content}</div>

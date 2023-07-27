@@ -10,6 +10,7 @@ function GuessArea(props) {
     "Gini Index coefficient - distribution of family income",
     "Obesity - adult prevalence rate",
   ]);
+  const [expandedGuess, setExpandedGuess] = useState("");
 
   const addPin = (name) => {
     setPinned((pinned) => [...pinned, name]);
@@ -35,6 +36,8 @@ function GuessArea(props) {
         pinned={pinned}
         categories={props.categories}
         handlePin={addPin}
+        expanded={guess == expandedGuess}
+        expandGuess={setExpandedGuess}
       />
     );
   });

@@ -8,6 +8,7 @@ function RankHintHeaderBar(props) {
         key={pin}
         statname={pin}
         handleClicked={props.handleUnpin}
+        showTip={true}
       />
     );
   });

@@ -25,7 +25,7 @@ function RankHintFull(props) {
             (props.diff ? (props.diff > 0 ? "\u2193" : "\u2191") : "")}
       </div>{" "}
       {props.description && (
-        <TipDiv tipText={props.description} rightSide={true}>
+        <TipDiv className="right_side" tipText={props.description}>
           <div className="info_icon">&#128712;</div>
         </TipDiv>
       )}

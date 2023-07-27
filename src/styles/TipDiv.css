@@ -1,5 +1,10 @@
 .tipdiv {
   position: relative;
+  width: 100%;
+}
+
+.tipdiv.right_side {
+  width: unset;
 }
 
 .tip {
@@ -27,7 +32,7 @@
   border-color: var(--highlight-color) transparent transparent transparent;
 }
 
-.tip.right_side {
+.right_side .tip {
   left: calc(100% + 10px);
   bottom: 50%;
   translate: 0 50%;
@@ -35,7 +40,7 @@
   padding: 20px;
 }
 
-.tipdiv .tip.tip.right_side::after {
+.tipdiv.right_side .tip.tip::after {
   top: 50%;
   left: 0%;
   margin-left: -20px;

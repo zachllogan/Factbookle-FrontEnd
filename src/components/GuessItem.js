@@ -78,7 +78,14 @@ function GuessItem(props) {
   return (
     <div className={"guess_item" + (props.expanded ? " expanded" : "")}>
       <TipDiv tipText={props.guess?.country} overflowRef={nameRef}>
-        <div className="guess_name" onClick={handleNameClicked} ref={nameRef}>
+        <div
+          className={
+            "guess_name" +
+            (props.guess?.country == props.target?.country ? " correct" : "")
+          }
+          onClick={handleNameClicked}
+          ref={nameRef}
+        >
           {props.guess?.country}
         </div>
       </TipDiv>

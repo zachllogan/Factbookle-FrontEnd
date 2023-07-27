@@ -9,17 +9,23 @@ function PinnableStat(props) {
     props.handleClicked(props.statname);
   };
 
-  return (
-    <TipDiv tipText={props.statname} overflowRef={nameRef}>
-      <div className="pinnable_stat">
-        <button className="pin" onClick={handleClicked}>
-          &#128392;
-        </button>
-        <div className="stat_name" ref={nameRef}>
-          {props.statname}
-        </div>
+  const content = (
+    <div className="pinnable_stat">
+      <button className="pin" onClick={handleClicked}>
+        &#128392;
+      </button>
+      <div className="stat_name" ref={nameRef}>
+        {props.statname}
       </div>
+    </div>
+  );
+
+  return props.showTip ? (
+    <TipDiv tipText={props.statname} overflowRef={nameRef}>
+      {content}
     </TipDiv>
+  ) : (
+    content
   );
 }
 

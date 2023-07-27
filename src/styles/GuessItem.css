@@ -21,6 +21,11 @@
   transition: 500ms;
 }
 
+.guess_name.correct {
+  color: green !important;
+  border-color: green !important;
+}
+
 .guess_name:hover {
   color: var(--highlight-color);
   text-decoration: underline;

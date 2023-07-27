@@ -31,7 +31,7 @@ function TipDiv(props) {
     >
       {props.children}
       <div
-        className={"tip" + (props.rightSide ? " right_side" : "")}
+        className="tip"
         style={{ visibility: shouldShowTip() ? "visible" : "hidden" }}
       >
         {props.tipText}

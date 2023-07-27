@@ -4,6 +4,7 @@
 
 .tip {
   background-color: var(--bg-color);
+  z-index: 1;
   position: absolute;
   bottom: calc(100% - 10px);
   left: 50%;
@@ -24,4 +25,21 @@
   border-width: 10px;
   border-style: solid;
   border-color: var(--highlight-color) transparent transparent transparent;
+}
+
+.tip.right_side {
+  left: calc(100% + 10px);
+  bottom: 50%;
+  translate: 0 50%;
+  width: 20em;
+  padding: 20px;
+}
+
+.tipdiv .tip.tip.right_side::after {
+  top: 50%;
+  left: 0%;
+  margin-left: -20px;
+  margin-top: -10px;
+  border-width: 10px;
+  border-color: transparent var(--highlight-color) transparent transparent;
 }

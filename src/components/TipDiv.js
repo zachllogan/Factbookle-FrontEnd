@@ -13,9 +13,10 @@ function TipDiv(props) {
 
   const shouldShowTip = () => {
     if (
-      props?.overflowRef &&
-      props?.overflowRef.current.clientWidth >=
-        props?.overflowRef.current.scrollWidth
+      !props?.tipText ||
+      (props?.overflowRef &&
+        props?.overflowRef?.current?.clientWidth >=
+          props?.overflowRef?.current?.scrollWidth)
     ) {
       return false;
     }
@@ -30,7 +31,7 @@ function TipDiv(props) {
     >
       {props.children}
       <div
-        className="tip"
+        className={"tip" + (props.rightSide ? " right_side" : "")}
         style={{ visibility: shouldShowTip() ? "visible" : "hidden" }}
       >
         {props.tipText}

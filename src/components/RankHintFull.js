@@ -1,5 +1,6 @@
 import "../styles/RankHintFull.css";
 import PinnableStat from "./PinnableStat";
+import TipDiv from "./TipDiv";
 
 function RankHintFull(props) {
   var color = "red";
@@ -22,7 +23,12 @@ function RankHintFull(props) {
             props.unit +
             " " +
             (props.diff ? (props.diff > 0 ? "\u2193" : "\u2191") : "")}
-      </div>
+      </div>{" "}
+      {props.description && (
+        <TipDiv tipText={props.description} rightSide={true}>
+          <div className="info_icon">&#128712;</div>
+        </TipDiv>
+      )}
     </div>
   );
 }

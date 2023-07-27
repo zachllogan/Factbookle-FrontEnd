@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "../styles/GuessItem.css";
 import RankHintFull from "./RankHintFull";
 import RankHintSm from "./RankHintSm";
+import TipDiv from "./TipDiv";
 
 function GuessItem(props) {
   var content;
@@ -50,6 +51,7 @@ function GuessItem(props) {
                     }
                     unit={stat.statType.unit}
                     handlePin={props.handlePin}
+                    description={stat?.statType.description}
                   />
                 );
               })}
@@ -75,9 +77,11 @@ function GuessItem(props) {
 
   return (
     <div className={"guess_item" + (props.expanded ? " expanded" : "")}>
-      <div className="guess_name" onClick={handleNameClicked} ref={nameRef}>
-        {props.guess?.country}
-      </div>
+      <TipDiv tipText={props.guess?.country} overflowRef={nameRef}>
+        <div className="guess_name" onClick={handleNameClicked} ref={nameRef}>
+          {props.guess?.country}
+        </div>
+      </TipDiv>
       <div className="guess_content">{content}</div>
     </div>
   );

@@ -43,7 +43,6 @@ function GuessArea(props) {
       />
     );
   });
-  console.log(guesses);
   return (
     <div>
       <RankHintHeaderBar pinned={pinned} handleUnpin={removePin} />

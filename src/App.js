@@ -23,6 +23,46 @@ function App() {
   const [target, setTarget] = useState(null);
   const [username, setUsername] = useState(null);
   const [player, setPlayer] = useState(null);
+  const [pinned, setPinned] = useState([
+    "Area",
+    "Population",
+    "Real GDP per capita",
+    "Gini Index coefficient - distribution of family income",
+    "Obesity - adult prevalence rate",
+  ]);
+
+  const addPin = (name) => {
+    setPinned((pinned) => {
+      return pinned.includes(name) ? pinned : [...pinned, name];
+    });
+  };
+
+  const removePin = (name) => {
+    setPinned((pinned) =>
+      pinned.filter((pin) => {
+        return pin != name;
+      })
+    );
+  };
+
+  useEffect(() => {
+    setPlayer((player) => {
+      return { ...player, pins: pinned?.join(";") };
+    });
+  }, [pinned]);
+
+  useEffect(() => {
+    if (player?.name && player?.playerId) {
+      fetch("http://localhost:5678/Player", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(player),
+      });
+    }
+  }, [player]);
 
   const fetchCountriesHandler = useCallback(async () => {
     try {
@@ -77,17 +117,15 @@ function App() {
         },
         body: JSON.stringify(newPlayer),
       });
+      setPinned(post?.pins?.split(";"));
       setPlayer(await post.json());
     } else {
       const responseObj = JSON.parse(responseTxt);
+      setPinned(responseObj?.pins?.split(";"));
       setPlayer(responseObj);
     }
     setUsername(name);
   };
-
-  // const handleLogin = (name) => {
-  //   fetchPlayerHandler(name);
-  // };
 
   return (
     <div className="App">
@@ -98,6 +136,9 @@ function App() {
         guesses={guesses}
         stats={stats}
         target={target}
+        pinned={pinned}
+        addPin={addPin}
+        removePin={removePin}
       />
       <WinModal
         show={guesses.includes(target?.country)}

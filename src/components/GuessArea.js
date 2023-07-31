@@ -3,28 +3,7 @@ import GuessItem from "./GuessItem";
 import RankHintHeaderBar from "./RankHintHeaderBar";
 
 function GuessArea(props) {
-  const [pinned, setPinned] = useState([
-    "Area",
-    "Population",
-    "Real GDP per capita",
-    "Gini Index coefficient - distribution of family income",
-    "Obesity - adult prevalence rate",
-  ]);
   const [expandedGuess, setExpandedGuess] = useState("");
-
-  const addPin = (name) => {
-    setPinned((pinned) => {
-      return pinned.includes(name) ? pinned : [...pinned, name];
-    });
-  };
-
-  const removePin = (name) => {
-    setPinned((pinned) =>
-      pinned.filter((pin) => {
-        return pin != name;
-      })
-    );
-  };
 
   const guesses = props.guesses?.map((guess, i) => {
     const guessStats = props.stats?.find((stat) => {
@@ -35,9 +14,9 @@ function GuessArea(props) {
         key={guess}
         guess={guessStats}
         target={props.target}
-        pinned={pinned}
+        pinned={props.pinned}
         categories={props.categories}
-        handlePin={addPin}
+        handlePin={props.addPin}
         expanded={guess == expandedGuess}
         expandGuess={setExpandedGuess}
         count={props.guesses.length - i}
@@ -46,7 +25,7 @@ function GuessArea(props) {
   });
   return (
     <div>
-      <RankHintHeaderBar pinned={pinned} handleUnpin={removePin} />
+      <RankHintHeaderBar pinned={props.pinned} handleUnpin={props.removePin} />
       {guesses}
     </div>
   );

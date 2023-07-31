@@ -1,12 +1,6 @@
 .guess_box {
-  background-color: var(--bg-color);
-  border-radius: 2em;
   font-size: 2rem;
-  height: ex;
-  border: 2px solid var(--highlight-color);
-  color: var(--fg-color);
-  outline: none;
-  padding: 0.5ex 1.5ex;
+  border-color: var(--highlight-color);
   margin: 2rem;
   width: 25rem;
 }

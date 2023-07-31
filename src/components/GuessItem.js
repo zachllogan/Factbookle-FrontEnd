@@ -86,7 +86,7 @@ function GuessItem(props) {
           onClick={handleNameClicked}
           ref={nameRef}
         >
-          {props.guess?.country}
+          {props.count + ". " + props.guess?.country}
         </div>
       </TipDiv>
       <div className="guess_content">{content}</div>

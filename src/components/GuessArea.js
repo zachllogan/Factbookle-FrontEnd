@@ -26,7 +26,7 @@ function GuessArea(props) {
     );
   };
 
-  const guesses = props.guesses?.map((guess) => {
+  const guesses = props.guesses?.map((guess, i) => {
     const guessStats = props.stats?.find((stat) => {
       return stat?.country == guess;
     });
@@ -40,6 +40,7 @@ function GuessArea(props) {
         handlePin={addPin}
         expanded={guess == expandedGuess}
         expandGuess={setExpandedGuess}
+        count={props.guesses.length - i}
       />
     );
   });

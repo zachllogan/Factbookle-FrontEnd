@@ -9,7 +9,7 @@ function GuessItem(props) {
   var nameRef = useRef();
 
   if (!props.expanded) {
-    content = props.pinned.map((pin) => {
+    content = props.pinned?.map((pin) => {
       const guessRank = props.guess?.stats.find((stat) => {
         return stat?.statType.name == pin;
       })?.ranking;

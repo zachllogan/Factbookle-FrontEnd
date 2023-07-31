@@ -1,0 +1,12 @@
+.logo {
+  width: 6em;
+  height: 6em;
+  margin: 2.5em;
+  animation: rotate 5s linear infinite;
+  animation-direction: reverse;
+  stroke: var(--fg-color);
+}
+
+.title_area .logo:first-child {
+  animation-direction: normal;
+}

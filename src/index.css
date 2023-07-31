@@ -44,3 +44,12 @@ input {
   color: var(--fg-color);
   background-color: var(--highlight-color);
 }
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

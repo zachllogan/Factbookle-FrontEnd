@@ -117,8 +117,9 @@ function App() {
         },
         body: JSON.stringify(newPlayer),
       });
-      setPinned(post?.pins?.split(";"));
-      setPlayer(await post.json());
+      const postResponse = await post.json();
+      setPinned(postResponse?.pins?.split(";"));
+      setPlayer(postResponse);
     } else {
       const responseObj = JSON.parse(responseTxt);
       setPinned(responseObj?.pins?.split(";"));

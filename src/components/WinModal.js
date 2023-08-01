@@ -7,9 +7,9 @@ function WinModal(props) {
   const [playerAvg, setPlayerAvg] = useState(-1);
   const [gameCount, setGameCount] = useState(-1);
 
-  const fetchStats = useCallback(async () => {
+  const fetchStats = useCallback(async (matchId, playerId) => {
     const response = await fetch(
-      "http://localhost:5678/Game/stats/" + props.matchId + "/" + props.playerId
+      "http://localhost:5678/Game/stats/" + matchId + "/" + playerId
     );
     if (!response.ok) {
       throw new Error("Something went wrong!");
@@ -23,7 +23,7 @@ function WinModal(props) {
 
   useEffect(() => {
     if (props.matchId && props.playerId) {
-      fetchStats();
+      fetchStats(props.matchId, props.playerId);
     }
   }, [props.show]);
 

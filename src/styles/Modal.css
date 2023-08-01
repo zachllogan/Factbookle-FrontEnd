@@ -12,6 +12,11 @@
   max-width: calc(100vw - 3em);
 }
 
+.modal.clear {
+  background-color: transparent;
+  border-color: transparent;
+}
+
 .modal_shroud {
   position: fixed;
   top: 0;

@@ -5,6 +5,8 @@ import GuessArea from "./components/GuessArea";
 import { useCallback, useState, useEffect } from "react";
 import WinModal from "./components/WinModal";
 import LoginModal from "./components/LoginModal";
+import Modal from "./components/Modal";
+import Logo from "./components/Logo";
 
 function App() {
   const categories = [
@@ -30,6 +32,8 @@ function App() {
     "Gini Index coefficient - distribution of family income",
     "Obesity - adult prevalence rate",
   ]);
+  const [loading, setLoading] = useState(true);
+  const [match, setMatch] = useState(null);
 
   const addPin = (name) => {
     setPinned((pinned) => {
@@ -64,8 +68,9 @@ function App() {
     }
   }, [player]);
 
-  const fetchCountriesHandler = useCallback(async () => {
+  const init = useCallback(async () => {
     try {
+      //Get Country Data
       const response = await fetch("http://localhost:5678/Country/all");
       if (!response.ok) {
         throw new Error("Something went wrong!");
@@ -79,13 +84,62 @@ function App() {
           return stat.country;
         })
       );
-      setTarget(responses[42]);
+
+      //Get Match Data
+      const matchResponse = await fetch("http://localhost:5678/Match/all");
+      if (!matchResponse.ok) {
+        throw new Error("Something went wrong!");
+      }
+      const MatchResponses = await matchResponse.json();
+      const today = new Date().toISOString().slice(0, 10);
+      const foundMatch = MatchResponses?.find((match) => {
+        return match.date == today;
+      });
+      //Load found match data
+      if (foundMatch) {
+        setMatch(foundMatch);
+        setTarget(
+          responses.find((x) => {
+            return x.country == foundMatch.country;
+          })
+        );
+      }
+      //Add new match if not present for the day
+      else {
+        const countiresLeft = responses.filter((x) => {
+          return !MatchResponses?.find((match) => {
+            return match.country == x.country;
+          });
+        });
+        const randCountry =
+          countiresLeft[Math.floor(Math.random() * countiresLeft.length)]
+            .country;
+        const newMatch = { date: today, country: randCountry };
+        const post = await fetch("http://localhost:5678/Match", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newMatch),
+        });
+        const postResponse = await post.json();
+        setMatch(post);
+        setTarget(
+          responses.find((x) => {
+            return x.country == post.country;
+          })
+        );
+      }
+
+      //Loading is finished
+      setLoading(false);
     } catch (error) {}
   }, []);
 
   useEffect(() => {
-    fetchCountriesHandler();
-  }, [fetchCountriesHandler]);
+    init();
+  }, []);
 
   const addGuess = (guess) => {
     if (guess == target.country) {
@@ -149,7 +203,13 @@ function App() {
         playerAvg={"{playerAvg}"}
         gameCount={"{gameCount}"}
       />
-      <LoginModal show={username == null} handleLogin={fetchPlayerHandler} />
+      <LoginModal
+        show={!loading && username == null}
+        handleLogin={fetchPlayerHandler}
+      />
+      <Modal className="clear" show={loading}>
+        <Logo />
+      </Modal>
     </div>
   );
 }

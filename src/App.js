@@ -23,7 +23,6 @@ function App() {
   const [countries, setCountries] = useState([]);
   const [guesses, setGuesses] = useState([]);
   const [target, setTarget] = useState(null);
-  const [username, setUsername] = useState(null);
   const [player, setPlayer] = useState(null);
   const [pinned, setPinned] = useState([
     "Area",
@@ -34,6 +33,7 @@ function App() {
   ]);
   const [loading, setLoading] = useState(true);
   const [match, setMatch] = useState(null);
+  const [game, setGame] = useState(null);
 
   const addPin = (name) => {
     setPinned((pinned) => {
@@ -67,6 +67,32 @@ function App() {
       });
     }
   }, [player]);
+
+  useEffect(() => {
+    setGame((game) => {
+      return {
+        ...game,
+        guesses: guesses.map((guess, i) => {
+          return { country: guess, guessOrder: i, gameId: game.gameId };
+        }),
+        numGuesses: guesses.length,
+      };
+    });
+  }, [guesses]);
+
+  useEffect(() => {
+    if (game?.matchId && game?.playerId && game?.guesses) {
+      console.log(game);
+      fetch("http://localhost:5678/Game", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(game),
+      });
+    }
+  }, [game]);
 
   const init = useCallback(async () => {
     try {
@@ -142,22 +168,23 @@ function App() {
   }, []);
 
   const addGuess = (guess) => {
-    if (guess == target.country) {
-      console.log("Yes!!");
-    }
     setGuesses((guesses) =>
       guesses.includes(guess) ? guesses : [guess, ...guesses]
     );
   };
 
   const fetchPlayerHandler = async (name) => {
+    setLoading(true);
+    //Fetch player from the name
     const response = await fetch("http://localhost:5678/Player/" + name);
     if (!response.ok) {
       throw new Error("Something went wrong!");
     }
-
-    console.log(response);
     const responseTxt = await response.text();
+    var playerId = -1;
+
+    //If no player registered under that name make one with default pins
+    //And set the player & start pins
     if (responseTxt == "") {
       const newPlayer = {
         name: name,
@@ -172,14 +199,59 @@ function App() {
         body: JSON.stringify(newPlayer),
       });
       const postResponse = await post.json();
+      //setPinned should be before setPlayer because it  will trigger a player post otherwise
       setPinned(postResponse?.pins?.split(";"));
       setPlayer(postResponse);
-    } else {
+      playerId = postResponse.playerId;
+    }
+    //Otherwise just update pins & player
+    else {
       const responseObj = JSON.parse(responseTxt);
       setPinned(responseObj?.pins?.split(";"));
       setPlayer(responseObj);
+      playerId = responseObj.playerId;
     }
-    setUsername(name);
+
+    //Fetch the game associated with the current match & player
+    const gameResponse = await fetch(
+      "http://localhost:5678/Game/" + match?.matchId + "/" + playerId
+    );
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
+    const gameResponseTxt = await gameResponse.text();
+    //If there is no game record create one and update the game variable
+    if (gameResponseTxt == "") {
+      const newGame = {
+        playerId: playerId,
+        matchId: match?.matchId,
+        numGuesses: 0,
+      };
+      console.log("before Post");
+      const post = await fetch("http://localhost:5678/Game", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newGame),
+      });
+      const postResponse = await post.json();
+      console.log("after Post");
+      setGame(postResponse);
+    }
+    //Otherwise just update the game
+    else {
+      const responseObj = JSON.parse(gameResponseTxt);
+      setGuesses(
+        responseObj.guesses.map((guess) => {
+          return guess.country;
+        })
+      );
+      setGame(responseObj);
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -199,12 +271,11 @@ function App() {
         show={guesses.includes(target?.country)}
         answer={target?.country}
         num={guesses?.length}
-        avg={"{avg}"}
-        playerAvg={"{playerAvg}"}
-        gameCount={"{gameCount}"}
+        matchId={match?.matchId}
+        playerId={player?.playerId}
       />
       <LoginModal
-        show={!loading && username == null}
+        show={!loading && player?.name == null}
         handleLogin={fetchPlayerHandler}
       />
       <Modal className="clear" show={loading}>
